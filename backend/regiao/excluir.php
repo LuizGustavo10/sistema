@@ -12,5 +12,4 @@ $_SESSION['mensagem'] = "$id excluido com Successo!";
 //mandar para pagina principal
 header('Location:../../regiao.php');
 
-
 ?>

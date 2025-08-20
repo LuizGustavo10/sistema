@@ -2,7 +2,7 @@
           <p style="color:white;">
             Bem-vindo(a) <?php echo $_SESSION['usuario']; ?>
           </p>
-           <li> <a href="principal.php" class="menu-item"> <i class="fa-solid fa-user"></i> Usuário </a> </li>
+           <li><a href="principal.php" class="menu-item"> <i class="fa-solid fa-user"></i> Usuário </a> </li>
           <li> <a href="regiao.php" class="menu-item"> <i class="fa-solid fa-location-dot"></i> Regiões </a> </li>
           <li> <a href="cidade.php" class="menu-item"> <i class="fa-solid fa-house-chimney"></i> Cidades </a> </li>
           <li> <a href="pontofocal.php" class="menu-item"> <i class="fa-solid fa-user-tie"></i> Pontos Focais </a> </li>
