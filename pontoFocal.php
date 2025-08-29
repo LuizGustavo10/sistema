@@ -8,7 +8,7 @@
   //se for diferente de vazio, se tiver id na URL
   if(!empty($_GET['id'])){
     $id = $_GET['id'];
-    $sql = "SELECT * FROM pontoFocal WHERE id='$id' ";
+    $sql = "SELECT * FROM ponto_focal WHERE id='$id' ";
     //executa sql
     $dados = mysqli_query($conexao, $sql);
     $pontoFocals = mysqli_fetch_assoc($dados);
@@ -42,26 +42,54 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label"> cep </label>
-            <input name="cep" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['cep']: "" ?>" class="form-control cep">
+            <label class="form-label"> Razão Social </label>
+            <input name="razao_social" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['razao_social']: "" ?>" class="form-control">
           </div>
 
           <div class="mb-3">
-            <label class="form-label"> estado </label>
-            <input name="estado" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['estado']: "" ?>" class="form-control">
+            <label class="form-label"> Tipo </label>
+            <select class="form-select" name="tipo">
+              <option value="Privada"> Privada </option>
+              <option value="Pública"> Pública </option>
+            </select>
           </div>
 
           <div class="mb-3">
-            <label> Região </label>
-            <select name="regiao" class="form-select" required>
-              <option> Selecione uma região </option>
+            <label class="form-label"> cnpj_cpf </label>
+            <input name="cnpj_cpf" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['cnpj_cpf']: "" ?>" class="form-control cnpj">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> endereco </label>
+            <input name="endereco" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['endereco']: "" ?>" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> telefone </label>
+            <input name="telefone" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['telefone']: "" ?>" class="form-control phone_with_ddd">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> celular </label>
+            <input name="celular" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['celular']: "" ?>" class="form-control phone_with_ddd">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> email </label>
+            <input name="email" type="text" value="<?php echo isset($pontoFocals) ? $pontoFocals['email']: "" ?>" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label> cidade </label>
+            <select name="cidade" class="form-select" required>
+              <option> Selecione uma cidade </option>
               <?php 
-                $sql = "SELECT * FROM regiao ORDER BY nome";
+                $sql = "SELECT * FROM cidade ORDER BY nome";
                 $resultado = mysqli_query($conexao, $sql);
-                $regiaoSelecionada = isset($pontoFocals) ? $pontoFocals['id_regiao_fk']: '';
+                $cidadeSelecionada = isset($pontoFocals) ? $pontoFocals['id_cidade_fk']: '';
 
                 while($reg = mysqli_fetch_assoc($resultado)){
-                  $selecao = ($reg['id'] == $regiaoSelecionada) ? 'selected' : '';
+                  $selecao = ($reg['id'] == $cidadeSelecionada) ? 'selected' : '';
                   echo "<option value='{$reg['id']}' $selecao> {$reg['nome']} </option>";
                 }
               ?>
@@ -104,11 +132,12 @@
               <td> <?php echo $coluna['celular'] ?> </td>
               <td> <?php echo $coluna['email'] ?> </td>
               <?php 
-                $sql = "SELECT * FROM regiao WHERE id=".$coluna['id_regiao_fk'];
+                $sql = "SELECT * FROM cidade WHERE id=".$coluna['id_cidade_fk'];
                 $resultado = mysqli_query($conexao, $sql);
-                $regiao = mysqli_fetch_assoc($resultado);
+                $cidade = mysqli_fetch_assoc($resultado);
               ?>
-              <td> <?php echo $regiao['nome'] ?> </td>
+              <td> <?php echo $cidade['nome'] ?> </td>
+         
               <td> 
                 <a href="./pontoFocal.php?id=<?= $coluna['id'] ?>"> <i class="fa-solid fa-pen-to-square me-3" style="color: blue;"></i></a>  
                 <a href="<?php echo "./backend/pontoFocal/excluir.php?id=".$coluna['id'] ?>" onclick="return confirm('Deseja realmente excluir?')"><i class="fa-solid fa-trash" style="color: #ff0000;"></i> </a>  
