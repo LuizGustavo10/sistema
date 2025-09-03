@@ -17,7 +17,7 @@
 
   <div class="container mt-4">
     <h2> Venda de Áreas de Cursos </h2>
-    <form>
+    <form action="./backend/venda/salvar_venda.php" method="post">
       <div class="row">
 
         <div class="col-md-4">
@@ -44,33 +44,38 @@
 
         <div class="col-md-4">
           <label> Ponto Focal (Empresa)</label>
-          <select class="form-select">
-            <option> Prefeitura </option>
-            <option> Feclopes </option>
+          <select class="form-select" name="ponto_focal_id" id="ponto_focal_id" required>
+            <option value=""> Selecione </option>
           </select>
         </div>
         
         <div class="col-md-4 mt-4"> 
           <label>Área de Curso</label>
-          <select class="form-select">
-            <option> Tecnologia </option>
-            <option> Gastronomia </option>
+          <select class="form-select" name="area_id" required>
+            <option> Selecione </option>
+            <?php
+            $areas = mysqli_query($conexao, "SELECT * FROM area ORDER BY nome");
+            while($a = mysqli_fetch_assoc($areas)){
+              echo "<option value='{$a['id']}'> {$a['nome']} </option>";  
+            }
+            ?>
           </select>
         </div>
 
         <div class="col-md-4 mt-4">
           <label> Data da Compra </label>
-          <input type="date" class="form-control">
+          <input type="date" class="form-control" 
+          name="dtcompra" value="<?=date('Y-m-d')?>">
         </div>
 
         <div class="col-md-4 mt-4">
           <label> Origem </label>
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" name="origem">
         </div>
 
         <div class="col-md-12 mt-4">
           <label> Observação </label>
-          <textarea class="form-control" rows="2"></textarea>
+          <textarea class="form-control" rows="2" name="obs"></textarea>
         </div>
         
         <div class="mt-4 d-flex justify-content-start">
@@ -95,7 +100,20 @@
   <script src="script.js"></script>
 
   <script>
-    $('#regiao_id').on('change', function(){ alert("Funcionou!"); })
+    //se tiver alteração no campo região, dispara essa função
+    $('#regiao_id').on('change', function(){ 
+      //variável que guarda id da região selecionada
+      var regiaoId = $(this).val();
+      //vamos chamar o arquivo php que vai carregar as cidades de acordo com região
+      $.post('./backend/venda/buscar_cidades.php', {regiao_id: regiaoId}, 
+      function(data){ $('#cidade_id').html(data); });
+     });
+
+     $('#cidade_id').on('change', function(){ 
+      var cidadeId = $(this).val();
+      $.post('./backend/venda/buscar_pontos_focais.php', {cidade_id: cidadeId}, 
+      function(data){ $('#ponto_focal_id').html(data); });
+     });
   </script>
 </body>
 
